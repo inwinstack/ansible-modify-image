@@ -1,0 +1,51 @@
+---
+- hosts: localhost
+  vars: 
+    image_to_modify: overcloud-compute-full.qcow2
+#    modify_image_upload_files:
+#      - src: /etc/yum.repos.d/delorean-pike-testing.repo 
+#        dest: /etc/yum.repos.d/delorean-pike-testing.repo 
+#      - src: /etc/yum.repos.d/delorean-pike.repo
+#        dest: /etc/yum.repos.d/delorean-pike.repo
+  tasks: 
+#    - set_fact:
+#        temp: []
+#    - name: Register pkgs
+#      find:
+#        paths: nsx-lcp-rhel74_x86_64
+#        patterns: '*.rpm'
+#      register: pkgs
+#
+#    - name: Upload repo file in the image
+#      vars:
+#      include_role:
+#        name: modify-image
+#
+#    - name: set upload list
+#      set_fact:
+#        temp: [{src: "{{item.path}}", dest: "/tmp"}]
+#        modify_image_upload_files: "{{modify_image_upload_files}} + {{temp}}"
+#      with_items: "{{pkgs.files}}"
+#
+#    - name: Upload file in the image
+#      include_role:
+#        name: modify-image
+#
+#
+#    - name: uninstall packages
+#      vars:
+#        modify_image_uninstall_packages:
+#          - 'openvswitch'
+#      include_role: 
+#        name: modify-image
+
+    - name: Install pkgs by command
+      vars:
+        modify_command: "\'yum install -y /tmp/*\'"
+      include_role:
+        name: modify-image
+
+
+
+
+

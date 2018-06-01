@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  tasks: 
+    - name: Upload file in the image
+      vars:
+        image_to_modify: overcloud-controller-full.qcow2
+        modify_image_upload_files:
+          - src: "controller_pkgs/vmware-nsx-11.0.0.7342605-1.noarch.rpm"
+            dest: /vmware-nsx-11.0.0.7342605-1.noarch.rpm
+          - src: "controller_pkgs/vmware-nsxlib-11.0.0.7342605-1.noarch.rpm"
+            dest: /tmp/vmware-nsxlib-11.0.0.7342605-1.noarch.rpm
+          - src: /etc/yum.repos.d/delorean-pike-testing.repo 
+            dest: /etc/yum.repos.d/delorean-pike-testing.repo 
+          - src: /etc/yum.repos.d/delorean-pike.repo
+            dest: /etc/yum.repos.d/delorean-pike.repo
+      include_role:
+        name: modify-image
+        
+    - name: Install packages in the image
+      vars:
+        image_to_modify: overcloud-controller-full.qcow2
+        modify_image_install_packages:
+          - 'openstack-neutron-fwaas'
+          - /vmware-nsx-11.0.0.7342605-1.noarch.rpm
+          - /tmp/vmware-nsxlib-11.0.0.7342605-1.noarch.rpm
+        modify_image_vc_verbose: true
+      include_role:
+        name: modify-image
